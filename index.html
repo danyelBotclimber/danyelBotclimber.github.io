@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Markdown Blog</title>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    #menu { margin-bottom: 2em; }
+    #menu a { margin-right: 1em; cursor: pointer; }
+    #content { border-top: 1px solid #ccc; padding-top: 1em; }
+  </style>
+  <script src="js/list_of_posts.js"></script>
+</head>
+<body>
+  <div id="menu"></div>
+  <div id="content">Select a post from the menu above.</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    const menu = document.getElementById('menu');
+    const content = document.getElementById('content');
+
+    posts.forEach(post => {
+      const link = document.createElement('a');
+      link.textContent = post.replace('.md', '');
+      link.href = '#';
+      link.onclick = (e) => {
+        e.preventDefault();
+        fetch('posts/' + post)
+          .then(res => res.text())
+          .then(md => {
+            content.innerHTML = marked.parse(md);
+          });
+      };
+      menu.appendChild(link);
+    });
+  </script>
+</body>
+</html>
